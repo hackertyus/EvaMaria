@@ -6,14 +6,14 @@ import heroku3
 from pyrogram import Client, filters
 from info import ADMINS, HEROKU_APP_NAME, HEROKU_API_KEY
 
-@Client.on_message(filters.command("usage") & filters.user(ADMINS))
-def dyno_usage(bot, message):
+@Client.on_message(filters.command('usage') & filters.user(ADMINS))
+async def dyno_usage(bot, message):
     heroku_api = "https://api.heroku.com"
     if HEROKU_API_KEY is not None and HEROKU_APP_NAME is not None:
         Heroku = heroku3.from_key(HEROKU_API_KEY)
         app = Heroku.app(HEROKU_APP_NAME)
     else:
-        message.reply_text(
+        await message.reply_text(
             "Please insert your HEROKU_APP_NAME and HEROKU_API_KEY in Vars"
         )
     useragent = (
@@ -56,7 +56,7 @@ def dyno_usage(bot, message):
             AppHours = math.floor(AppQuotaUsed / 60)
             AppMinutes = math.floor(AppQuotaUsed % 60)
 
-            message.reply_text(
+            await message.reply_text(
                 f"<b>ℹ️ Dyno Usage ℹ️</b>\n\n<code>🟢 {app.name}</code>:\n"
                 f"• <code>{AppHours}</code> <b>Hours and</b> <code>{AppMinutes}</code> <b>Minutes\n💯: {AppPercent}%</b>\n\n"
                 "<b>⚠️ Dyno Remaining ⚠️</b>\n"
